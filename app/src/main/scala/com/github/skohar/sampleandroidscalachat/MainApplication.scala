@@ -1,10 +1,10 @@
 package com.github.skohar.sampleandroidscalachat
 
-import android.app.Application
+import android.support.multidex.MultiDexApplication
 import com.crashlytics.android.Crashlytics
 import io.fabric.sdk.android.Fabric
 
-class MainApplication extends Application {
+class MainApplication extends MultiDexApplication {
 
   override def onCreate() = {
     super.onCreate()
