@@ -2,6 +2,7 @@ package com.github.skohar.sampleandroidscalachat
 
 import java.io.File
 
+import android.content.Intent
 import android.media.{AudioFormat, AudioRecord}
 import android.support.multidex.MultiDexApplication
 import com.crashlytics.android.Crashlytics
@@ -24,6 +25,7 @@ class MainApplication extends MultiDexApplication {
     Fabric.`with`(this, new Crashlytics())
     JodaTimeAndroid.init(this)
 
+    startService(new Intent(this, classOf[MainIntentService]))
     val dateTimeString = DateTime.now().withMinuteOfHour(0).withSecondOfMinute(0)
       .withMillisOfSecond(0).toString("yyyyMMddHHmmss")
     waveFileWriter = new WaveFileWriter(file)
@@ -34,14 +36,14 @@ class MainApplication extends MultiDexApplication {
     audioRecord.setRecordPositionUpdateListener(new AudioRecord.OnRecordPositionUpdateListener() {
 
       override def onPeriodicNotification(recorder: AudioRecord): Unit = {
-        val array:Array[Short] = new Array[Short](bufSize / 2)
+        val array: Array[Short] = new Array[Short](bufSize / 2)
         audioRecord.read(array, 0, bufSize / 2)
         array.foreach(waveFileWriter.write(_))
       }
 
-      override def onMarkerReached (recorder: AudioRecord): Unit ={
+      override def onMarkerReached(recorder: AudioRecord): Unit = {
       }
-    })  
+    })
   }
 
   override def onLowMemory(): Unit = {
