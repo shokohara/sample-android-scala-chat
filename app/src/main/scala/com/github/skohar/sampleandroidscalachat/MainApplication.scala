@@ -41,7 +41,7 @@ class MainApplication extends MultiDexApplication {
 
       override def onMarkerReached (recorder: AudioRecord): Unit ={
       }
-    })
+    })  
   }
 
   override def onLowMemory(): Unit = {
