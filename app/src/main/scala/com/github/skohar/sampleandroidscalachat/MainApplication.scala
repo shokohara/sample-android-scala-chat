@@ -16,6 +16,7 @@ class MainApplication extends MultiDexApplication {
     AudioFormat.ENCODING_PCM_16BIT)
   var audioRecord: AudioRecord = _
   var file: File = _
+  var waveFileWriter: WaveFileWriter = _
 
   override def onCreate() = {
     super.onCreate()
@@ -25,12 +26,12 @@ class MainApplication extends MultiDexApplication {
 
     val dateTimeString = DateTime.now().withMinuteOfHour(0).withSecondOfMinute(0)
       .withMillisOfSecond(0).toString("yyyyMMddHHmmss")
+    waveFileWriter = new WaveFileWriter(file)
     file = new File(s"/sdcard/$dateTimeString.wav")
     audioRecord = new AudioRecord(1, SAMPLING_RATE, AudioFormat.CHANNEL_IN_MONO,
       AudioFormat.ENCODING_PCM_16BIT, bufSize)
     audioRecord.setPositionNotificationPeriod(bufSize / 2)
     audioRecord.setRecordPositionUpdateListener(new AudioRecord.OnRecordPositionUpdateListener() {
-      val waveFileWriter = new WaveFileWriter(file)
 
       override def onPeriodicNotification(recorder: AudioRecord): Unit = {
         val array:Array[Short] = new Array[Short](bufSize / 2)
